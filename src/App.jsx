@@ -11,12 +11,31 @@ import './App.css'
 
 // Hooks
 import { useForm } from './Hooks/useForm'
+import { useState } from 'react'
 
 
 
 function App() {
 
-  const formComponents = [<UserForm />, <ReviewForm />, <Thanks />]
+  const formTemplate = {
+    name: '',
+    email: '',
+    review: '',
+    comment: '',
+  };
+
+  const [data, setData] = useState(formTemplate)
+
+  const updateFieldHandler = (key, value) => {
+    setData((prev) => {
+      return {
+        ...prev,
+        [key]: value
+      }
+    })
+  }
+
+  const formComponents = [<UserForm data={data} updateFieldHandler={updateFieldHandler} />, <ReviewForm data={data} updateFieldHandler={updateFieldHandler} />, <Thanks data={data} />]
 
   const { currentStep, currentComponent, changeStep, isLastStep, isFirstStep } = useForm(formComponents)
 
